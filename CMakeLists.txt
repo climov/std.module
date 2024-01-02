@@ -97,7 +97,7 @@ else() # not emulated, true named module
 
 endif() #emulated
 
-add_executable(std-test test.cpp)
+add_executable(std-test EXCLUDE_FROM_ALL test.cpp)
 target_compile_features(std-test PRIVATE cxx_std_20)
 target_link_libraries(std-test PRIVATE std)
 target_include_directories(std-test BEFORE PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
