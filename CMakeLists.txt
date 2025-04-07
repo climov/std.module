@@ -49,7 +49,7 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 elseif (MSVC)
 # I do mean C++20
   set(std-lang-additional /utf-8 /Zc:__cplusplus /Zc:throwingNew /Zc:inline /Zc:externConstexpr /Zc:templateScope /Zc:checkGwOdr /Zc:enumTypes)
-  set(USE_EMULATION ON)  
+  set(USE_EMULATION OFF)
 endif()
 
 target_sources(std
