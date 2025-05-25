@@ -64,6 +64,29 @@ void println(std::format_string<T...> fmt, T&&... args) {
 #endif
 }
 
+EXPORT
+    template <typename... T>
+    void println(FILE* file, std::format_string<T...> fmt, T&&... args) {
+    auto _Text = std::format(fmt, std::forward<T>(args)...);
+    _Text.push_back('\n');
+#ifdef _WIN32
+    constexpr auto CP_UTF8 = 65001;
+    const int _Required =
+        ::MultiByteToWideChar(CP_UTF8, 0,
+                              _Text.data(), static_cast<int>(_Text.size()),
+                              nullptr, 0);
+    std::wstring _WText(_Required, L'\0');
+    ::MultiByteToWideChar(CP_UTF8, 0,
+                          _Text.data(), static_cast<int>(_Text.size()),
+                          _WText.data(), static_cast<int>(_WText.size()));
+    ::WriteConsoleW(_get_osfhandle(_fileno(stdout)),
+                    _WText.data(), static_cast<unsigned>(_WText.size()),
+                    nullptr, nullptr);
+#else
+    std::fwrite(_Text.data(), sizeof(char), _Text.size(), file);
+#endif
+}
+
 } // namespace std
 #endif
 
